@@ -1,0 +1,20 @@
+[{
+  "_id": {
+    "$oid": "69c0d52714327b51210d8dd4"
+  },
+  "code": "IDK30",
+  "discountType": "percent",
+  "discountValue": 30,
+  "maxUses": 50,
+  "usedCount": 2,
+  "minOrderValue": 1000,
+  "expiryDate": {
+    "$date": "2026-03-30T00:00:00.000Z"
+  },
+  "isActive": true,
+  "description": "",
+  "createdAt": {
+    "$date": "2026-03-23T05:52:39.604Z"
+  },
+  "__v": 0
+}]

@@ -1,0 +1,52 @@
+[{
+  "_id": {
+    "$oid": "69c0d16514327b51210d8d57"
+  },
+  "name": "Quản trị viên",
+  "email": "admin@ktck.vn",
+  "password": "$2b$10$mrH.QLHXZgwhnkChykIf3.XEZvnbQ.z2BSmELnOP6y51vDtceLFyS",
+  "role": "admin",
+  "createdAt": {
+    "$date": "2026-03-23T05:36:37.001Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69c0d16514327b51210d8d58"
+  },
+  "name": "Người dùng Test",
+  "email": "user@ktck.vn",
+  "password": "$2b$10$bdyeQ0yRs1uc//mL6FkjC.je6PmOsOHPXXC0gQEGdg6Vlox6SVXmC",
+  "role": "user",
+  "createdAt": {
+    "$date": "2026-03-23T05:36:37.002Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69c0d1ed14327b51210d8d61"
+  },
+  "name": "Duy Tai",
+  "email": "Toastier@pcshop.com",
+  "password": "$2b$10$8vRi8x/P1ikimnfmYf41xua2kblY0O5TnSmgkJl5LHR1i0.eisHHG",
+  "role": "admin",
+  "createdAt": {
+    "$date": "2026-03-23T05:38:53.524Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69c0d5da14327b51210d8e15"
+  },
+  "name": "Toastier",
+  "email": "TeiyupTeiyup@Gmail.com",
+  "password": "$2b$10$YrVUG0girkfHHeIQPtRzjOJqpkKaN33MOezF/S7BI41u0csfSNWo2",
+  "role": "user",
+  "createdAt": {
+    "$date": "2026-03-23T05:55:38.568Z"
+  },
+  "__v": 0
+}]

@@ -1,0 +1,219 @@
+[{
+  "_id": {
+    "$oid": "69bed0abfa3456c6b3e14c78"
+  },
+  "userId": {
+    "$oid": "69be9aa16c3d1ff09980a170"
+  },
+  "items": [
+    {
+      "fruitId": {
+        "$oid": "69be9aa16c3d1ff09980a169"
+      },
+      "name": "Táo đỏ",
+      "price": 25000,
+      "quantity": 3,
+      "_id": {
+        "$oid": "69bed053fa3456c6b3e14c5e"
+      }
+    }
+  ],
+  "totalPrice": 75000,
+  "address": "3414124142",
+  "phone": "0909909009",
+  "status": "shipped",
+  "createdAt": {
+    "$date": "2026-03-21T17:08:59.502Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69bf990e5a9820373186f79e"
+  },
+  "userId": {
+    "$oid": "69bf969e5a9820373186f792"
+  },
+  "items": [
+    {
+      "fruitId": {
+        "$oid": "69be9aa16c3d1ff09980a169"
+      },
+      "name": "Táo đỏ",
+      "price": 25000,
+      "quantity": 1,
+      "_id": {
+        "$oid": "69bf99015a9820373186f79a"
+      }
+    }
+  ],
+  "totalPrice": 25000,
+  "address": "sas",
+  "phone": "6347373621",
+  "status": "completed",
+  "createdAt": {
+    "$date": "2026-03-22T07:23:58.252Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69c0c80b14327b51210d8d00"
+  },
+  "userId": {
+    "$oid": "69bf969e5a9820373186f792"
+  },
+  "items": [
+    {
+      "fruitId": {
+        "$oid": "69be9aa16c3d1ff09980a169"
+      },
+      "name": "Táo đỏ",
+      "price": 25000,
+      "quantity": 8,
+      "_id": {
+        "$oid": "69bfa158f25ef24cb654d62f"
+      }
+    },
+    {
+      "fruitId": {
+        "$oid": "69c0c7e014327b51210d8ce7"
+      },
+      "name": "Xoài",
+      "price": 12000,
+      "quantity": 1,
+      "_id": {
+        "$oid": "69c0c7ef14327b51210d8cf3"
+      }
+    }
+  ],
+  "totalPrice": 212000,
+  "couponCode": null,
+  "discountAmount": 0,
+  "finalPrice": 212000,
+  "address": "321412525fada",
+  "phone": "0909090909",
+  "status": "completed",
+  "createdAt": {
+    "$date": "2026-03-23T04:56:43.350Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69c0c88414327b51210d8d31"
+  },
+  "userId": {
+    "$oid": "69bf969e5a9820373186f792"
+  },
+  "items": [
+    {
+      "fruitId": {
+        "$oid": "69c0c7e014327b51210d8ce7"
+      },
+      "name": "Xoài",
+      "price": 12000,
+      "quantity": 2,
+      "_id": {
+        "$oid": "69c0c87114327b51210d8d29"
+      }
+    }
+  ],
+  "totalPrice": 24000,
+  "couponCode": null,
+  "discountAmount": 0,
+  "finalPrice": 24000,
+  "address": "ádasdasdad",
+  "phone": "09090090998",
+  "status": "shipped",
+  "createdAt": {
+    "$date": "2026-03-23T04:58:44.615Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69c0d56714327b51210d8de7"
+  },
+  "userId": {
+    "$oid": "69c0d1ed14327b51210d8d61"
+  },
+  "items": [
+    {
+      "fruitId": {
+        "$oid": "69c0d31214327b51210d8d7e"
+      },
+      "name": "Táo Đỏ",
+      "price": 20000,
+      "quantity": 1,
+      "_id": {
+        "$oid": "69c0d53014327b51210d8dda"
+      }
+    },
+    {
+      "fruitId": {
+        "$oid": "69c0d47f14327b51210d8dbc"
+      },
+      "name": "Dưa Leo",
+      "price": 9000,
+      "quantity": 1,
+      "_id": {
+        "$oid": "69c0d53314327b51210d8ddf"
+      }
+    }
+  ],
+  "totalPrice": 29000,
+  "couponCode": "IDK30",
+  "discountAmount": 8700,
+  "finalPrice": 20300,
+  "address": "iueiauweiu",
+  "phone": "90980980988",
+  "status": "shipped",
+  "createdAt": {
+    "$date": "2026-03-23T05:53:43.040Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69c0d60214327b51210d8e30"
+  },
+  "userId": {
+    "$oid": "69c0d5da14327b51210d8e15"
+  },
+  "items": [
+    {
+      "fruitId": {
+        "$oid": "69c0d31214327b51210d8d7e"
+      },
+      "name": "Táo Đỏ",
+      "price": 20000,
+      "quantity": 1,
+      "_id": {
+        "$oid": "69c0d5e414327b51210d8e20"
+      }
+    },
+    {
+      "fruitId": {
+        "$oid": "69c0d32a14327b51210d8d81"
+      },
+      "name": "Xoài",
+      "price": 12000,
+      "quantity": 1,
+      "_id": {
+        "$oid": "69c0d5eb14327b51210d8e25"
+      }
+    }
+  ],
+  "totalPrice": 32000,
+  "couponCode": "IDK30",
+  "discountAmount": 9600,
+  "finalPrice": 22400,
+  "address": "123123123",
+  "phone": "2313123133",
+  "status": "shipped",
+  "createdAt": {
+    "$date": "2026-03-23T05:56:18.228Z"
+  },
+  "__v": 0
+}]

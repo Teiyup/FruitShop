@@ -1,0 +1,156 @@
+<div class="cart-container">
+  <div class="cart-header">
+    <h1>Giỏ Hàng</h1>
+    <button (click)="continueShopping()" class="btn-continue">← Tiếp tục mua sắm</button>
+  </div>
+  
+  <div *ngIf="loading" class="loading">Đang tải giỏ hàng...</div>
+  
+  <div *ngIf="!loading && cartItems.length === 0 && !orderSuccess" class="empty-cart">
+    <p>Giỏ hàng của bạn trống</p>
+    <button (click)="continueShopping()" class="btn-primary">Bắt đầu mua sắm</button>
+  </div>
+  
+  <div *ngIf="!loading && cartItems.length > 0" class="cart-content">
+    <div class="cart-items">
+      <table class="items-table">
+        <thead>
+          <tr>
+            <th>Sản phẩm</th>
+            <th>Giá</th>
+            <th>Số lượng</th>
+            <th>Tổng tiền</th>
+            <th>Hành động</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of cartItems" class="cart-item">
+            <td>{{ item.name }}</td>
+            <td>{{ item.price.toLocaleString('vi-VN') }}đ</td>
+            <td>
+              <div class="quantity-input">
+                <button (click)="updateQuantity(item.fruitId, item.quantity - 1)" class="qty-btn">−</button>
+                <input type="number" [(ngModel)]="item.quantity" (ngModelChange)="updateQuantity(item.fruitId, $event)" min="1">
+                <button (click)="updateQuantity(item.fruitId, item.quantity + 1)" class="qty-btn">+</button>
+              </div>
+            </td>
+            <td class="total">{{ (item.price * item.quantity).toLocaleString('vi-VN') }}đ</td>
+            <td>
+              <button (click)="openConfirmDialog(item.fruitId)" class="btn-remove">Xóa</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    
+    <div class="cart-summary">
+      <div class="summary-card">
+        <h3>Tóm tắt đơn hàng</h3>
+        
+        <div class="summary-row">
+          <span>Tổng tiền hàng:</span>
+          <span>{{ getTotalPrice().toLocaleString('vi-VN') }}đ</span>
+        </div>
+        
+        <div class="summary-row">
+          <span>Phí vận chuyển:</span>
+          <span>Miễn phí</span>
+        </div>
+
+        <!-- Coupon Section -->
+        <div class="coupon-section">
+          <div class="coupon-input-group">
+            <input 
+              type="text" 
+              [(ngModel)]="couponCode" 
+              placeholder="Nhập mã coupon"
+              class="coupon-input"
+              [disabled]="validatingCoupon"
+            >
+            <button 
+              (click)="applyCoupon()" 
+              class="btn-apply-coupon"
+              [disabled]="validatingCoupon || !couponCode.trim()"
+            >
+              {{ validatingCoupon ? 'Đang kiểm tra...' : 'Áp dụng' }}
+            </button>
+          </div>
+          
+          <div *ngIf="appliedCoupon" class="coupon-applied">
+            <span>✓ Áp dụng: {{ appliedCoupon.code }}</span>
+            <button (click)="removeCoupon()" class="btn-remove-coupon">Xóa</button>
+          </div>
+        </div>
+
+        <div *ngIf="discountAmount > 0" class="summary-row discount">
+          <span>Giảm giá:</span>
+          <span>-{{ discountAmount.toLocaleString('vi-VN') }}đ</span>
+        </div>
+        
+        <div class="summary-total">
+          <span>Tổng cộng:</span>
+          <span>{{ getFinalPrice().toLocaleString('vi-VN') }}đ</span>
+        </div>
+        
+        <button 
+          (click)="showCheckout = !showCheckout" 
+          class="btn-checkout"
+          *ngIf="!orderSuccess"
+        >
+          Tiến hành thanh toán
+        </button>
+      </div>
+      
+      <div class="checkout-form" *ngIf="showCheckout && !orderSuccess">
+        <h3>Thông tin giao hàng</h3>
+        
+        <div class="form-group">
+          <label>Địa chỉ giao hàng</label>
+          <textarea 
+            [(ngModel)]="checkoutForm.address" 
+            placeholder="Nhập địa chỉ giao hàng của bạn"
+            rows="3"
+          ></textarea>
+        </div>
+        
+        <div class="form-group">
+          <label>Số điện thoại</label>
+          <input 
+            type="tel" 
+            [(ngModel)]="checkoutForm.phone" 
+            placeholder="Nhập số điện thoại"
+          >
+        </div>
+        
+        <button 
+          (click)="createOrder()" 
+          class="btn-order"
+          [disabled]="orderCreating"
+        >
+          {{ orderCreating ? 'Đang xử lý...' : 'Đặt hàng' }}
+        </button>
+      </div>
+    </div>
+  </div>
+  
+  <div *ngIf="orderSuccess" class="order-success">
+    <div class="success-content">
+      <h2>✓ Đặt hàng thành công!</h2>
+      <p>Cảm ơn bạn đã mua sắm tại cửa hàng của chúng tôi.</p>
+      <p>Chúng tôi sẽ giao hàng cho bạn sớm nhất.</p>
+      <button (click)="router.navigate(['/orders'])" class="btn-primary">Xem đơn hàng</button>
+    </div>
+  </div>
+
+  <!-- Confirm Dialog -->
+  <div class="modal" *ngIf="showConfirmDialog" [class.active]="showConfirmDialog">
+    <div class="modal-content confirm-modal">
+      <h3>Xác nhận xóa</h3>
+      <p *ngIf="confirmDialogItem">Bạn có chắc chắn muốn xóa <strong>{{ confirmDialogItem.name }}</strong> khỏi giỏ hàng?</p>
+      <div class="modal-actions">
+        <button (click)="cancelRemove()" class="btn-cancel">Hủy</button>
+        <button (click)="confirmRemove()" class="btn-delete">Xóa</button>
+      </div>
+    </div>
+  </div>
+</div>

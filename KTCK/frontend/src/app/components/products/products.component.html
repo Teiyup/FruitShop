@@ -1,0 +1,118 @@
+<div class="products-container">
+  <div class="products-header">
+    <h1>Cửa Hàng Trái Cây</h1>
+    <div class="search-bar">
+      <input 
+        type="text" 
+        placeholder="Tìm kiếm trái cây..."
+        [(ngModel)]="searchQuery"
+        (ngModelChange)="onSearchChange($event)"
+        class="search-input"
+      >
+      <button (click)="search()" class="search-btn">
+        <span>🔍</span>
+      </button>
+    </div>
+  </div>
+  
+  <!-- Filters & Sort -->
+  <div class="filters-section">
+    <div class="filter-group">
+      <label>Danh Mục:</label>
+      <select [(ngModel)]="selectedCategory" (ngModelChange)="onCategoryChange()" class="filter-select">
+        <option value="">Tất cả</option>
+        <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
+      </select>
+    </div>
+    
+    <div class="filter-group">
+      <label>Sắp Xếp:</label>
+      <select [(ngModel)]="sortBy" (ngModelChange)="onSortChange()" class="filter-select">
+        <option value="name">Tên A-Z</option>
+        <option value="price-low">Giá: Rẻ → Đắt</option>
+        <option value="price-high">Giá: Đắt → Rẻ</option>
+      </select>
+    </div>
+  </div>
+  
+  <div *ngIf="loading" class="loading">Đang tải dữ liệu...</div>
+  
+  <div class="products-grid">
+    <div *ngFor="let fruit of fruits" class="product-card">
+      <button 
+        (click)="toggleWishlist(fruit._id); $event.stopPropagation()" 
+        class="wishlist-btn"
+        [class.wishlisted]="isWishlisted(fruit._id)"
+        title="Thêm vào yêu thích"
+      >
+        ♥
+      </button>
+      <div class="product-image" (click)="openProductModal(fruit)">
+        <img [src]="fruit.image" [alt]="fruit.name">
+      </div>
+      <div class="product-info">
+        <h3 (click)="openProductModal(fruit)">{{ fruit.name }}</h3>
+        <p class="description">{{ fruit.description }}</p>
+        <div class="product-footer">
+          <span class="price">{{ fruit.price.toLocaleString('vi-VN') }}đ</span>
+          <span class="stock">Còn: {{ fruit.stock }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Product Modal -->
+  <div class="modal" *ngIf="showModal" [class.active]="showModal">
+    <div class="modal-content">
+      <button class="close-btn" (click)="closeModal()">✕</button>
+      
+      <div class="modal-body" *ngIf="selectedFruit">
+        <div class="modal-image">
+          <img [src]="selectedFruit.image" [alt]="selectedFruit.name">
+        </div>
+        
+        <div class="modal-details">
+          <div class="modal-header">
+            <h2>{{ selectedFruit.name }}</h2>
+            <button 
+              (click)="toggleWishlist(selectedFruit._id); $event.stopPropagation()" 
+              class="wishlist-btn-modal"
+              [class.wishlisted]="isWishlisted(selectedFruit._id)"
+              title="Thêm vào yêu thích"
+            >
+              ♥
+            </button>
+          </div>
+          <p class="modal-description">{{ selectedFruit.description }}</p>
+          
+          <div class="price-section">
+            <span class="price">{{ selectedFruit.price.toLocaleString('vi-VN') }}đ</span>
+            <span class="stock-info">Còn {{ selectedFruit.stock }} sản phẩm</span>
+          </div>
+          
+          <div class="quantity-section">
+            <label>Số lượng:</label>
+            <div class="quantity-input">
+              <button (click)="quantity = Math.max(1, quantity - 1)" class="qty-btn">−</button>
+              <input type="number" [(ngModel)]="quantity" min="1" [max]="selectedFruit.stock">
+              <button (click)="quantity = Math.min(selectedFruit.stock, quantity + 1)" class="qty-btn">+</button>
+            </div>
+          </div>
+          
+          <div *ngIf="addedToCart" class="success-message">
+            ✓ Đã thêm vào giỏ hàng
+          </div>
+          
+          <button 
+            (click)="addToCart()" 
+            class="btn-add-cart"
+            [disabled]="addedToCart"
+            *ngIf="!addedToCart"
+          >
+            Thêm vào giỏ hàng
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

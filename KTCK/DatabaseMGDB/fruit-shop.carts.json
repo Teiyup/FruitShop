@@ -1,0 +1,25 @@
+[{
+  "_id": {
+    "$oid": "69be98297465f5a4bd193032"
+  },
+  "userId": {
+    "$oid": "69be97f07465f5a4bd19302b"
+  },
+  "items": [
+    {
+      "fruitId": {
+        "$oid": "69be941a7465f5a4bd19301c"
+      },
+      "name": "Chuối",
+      "price": 15000,
+      "quantity": 3,
+      "_id": {
+        "$oid": "69be98297465f5a4bd193033"
+      }
+    }
+  ],
+  "updatedAt": {
+    "$date": "2026-03-21T13:07:53.986Z"
+  },
+  "__v": 0
+}]

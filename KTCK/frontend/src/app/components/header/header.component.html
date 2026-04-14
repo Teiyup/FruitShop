@@ -1,0 +1,41 @@
+<header class="header">
+  <div class="header-container">
+    <div class="logo">
+      <h1 (click)="navigateTo('/')" class="logo-text">🍎 Cửa Hàng Trái Cây</h1>
+    </div>
+    
+    <nav class="nav" [class.mobile-open]="showMobileMenu">
+      <ul>
+        <li><a (click)="navigateTo('/')" class="nav-link">Trang chủ</a></li>
+        
+        <li *ngIf="currentUser">
+          <a (click)="navigateTo('/orders')" class="nav-link">Đơn hàng</a>
+        </li>
+        
+        <li *ngIf="isAdmin">
+          <a (click)="navigateTo('/admin')" class="nav-link admin-link">⚙️ Admin</a>
+        </li>
+      </ul>
+    </nav>
+    
+    <div class="header-actions">
+      <div *ngIf="currentUser" class="user-section">
+        <span class="user-name">👤 {{ currentUser.name }}</span>
+        <button (click)="logout()" class="btn-logout">Đăng xuất</button>
+      </div>
+      
+      <div *ngIf="!currentUser" class="auth-section">
+        <button (click)="navigateTo('/login')" class="btn-login">Đăng nhập</button>
+      </div>
+      
+      <div *ngIf="currentUser" class="cart-icon" (click)="navigateTo('/cart')">
+        <span class="cart-symbol">🛒</span>
+        <span *ngIf="cartCount > 0" class="cart-badge">{{ cartCount }}</span>
+      </div>
+    </div>
+    
+    <button class="menu-toggle" (click)="showMobileMenu = !showMobileMenu">
+      ☰
+    </button>
+  </div>
+</header>

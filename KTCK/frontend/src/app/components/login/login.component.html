@@ -1,0 +1,101 @@
+<div class="login-container">
+  <div class="login-wrapper">
+    <h1>{{ isLogin ? 'Đăng Nhập' : 'Đăng Ký' }}</h1>
+    
+    <div *ngIf="error" class="error-message">{{ error }}</div>
+    
+    <form *ngIf="isLogin" (ngSubmit)="onLogin()">
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input 
+          type="email" 
+          id="email" 
+          [(ngModel)]="loginForm.email" 
+          name="email"
+          placeholder="Nhập email của bạn"
+          required
+        >
+      </div>
+      
+      <div class="form-group">
+        <label for="password">Mật khẩu</label>
+        <input 
+          type="password" 
+          id="password" 
+          [(ngModel)]="loginForm.password" 
+          name="password"
+          placeholder="Nhập mật khẩu"
+          required
+        >
+      </div>
+      
+      <button type="submit" class="btn-primary" [disabled]="loading">
+        {{ loading ? 'Đang đăng nhập...' : 'Đăng Nhập' }}
+      </button>
+      
+      <p class="toggle-text">
+        Chưa có tài khoản? 
+        <a href="javascript:void(0)" (click)="isLogin = false">Đăng ký</a>
+      </p>
+    </form>
+    
+    <form *ngIf="!isLogin" (ngSubmit)="onRegister()">
+      <div class="form-group">
+        <label for="name">Tên của bạn</label>
+        <input 
+          type="text" 
+          id="name" 
+          [(ngModel)]="registerForm.name" 
+          name="name"
+          placeholder="Nhập tên của bạn"
+          required
+        >
+      </div>
+      
+      <div class="form-group">
+        <label for="email-reg">Email</label>
+        <input 
+          type="email" 
+          id="email-reg" 
+          [(ngModel)]="registerForm.email" 
+          name="email"
+          placeholder="Nhập email của bạn"
+          required
+        >
+      </div>
+      
+      <div class="form-group">
+        <label for="password-reg">Mật khẩu</label>
+        <input 
+          type="password" 
+          id="password-reg" 
+          [(ngModel)]="registerForm.password" 
+          name="password"
+          placeholder="Nhập mật khẩu"
+          required
+        >
+      </div>
+      
+      <div class="form-group">
+        <label for="confirm-password">Xác nhận mật khẩu</label>
+        <input 
+          type="password" 
+          id="confirm-password" 
+          [(ngModel)]="registerForm.confirmPassword" 
+          name="confirmPassword"
+          placeholder="Xác nhận mật khẩu"
+          required
+        >
+      </div>
+      
+      <button type="submit" class="btn-primary" [disabled]="loading">
+        {{ loading ? 'Đang đăng ký...' : 'Đăng Ký' }}
+      </button>
+      
+      <p class="toggle-text">
+        Đã có tài khoản? 
+        <a href="javascript:void(0)" (click)="isLogin = true">Đăng nhập</a>
+      </p>
+    </form>
+  </div>
+</div>

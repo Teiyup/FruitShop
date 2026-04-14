@@ -1,0 +1,335 @@
+<div class="admin-wrapper">
+  <!-- Sidebar Navigation -->
+  <div class="sidebar">
+    <div class="sidebar-header">
+      <div class="logo">🍎 KTCK</div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-item" (click)="activeTab = 'dashboard'" [class.active]="activeTab === 'dashboard'">
+        <span class="nav-icon">📊</span>
+        <span class="nav-label">Dashboard</span>
+      </div>
+      <div class="nav-item" (click)="activeTab = 'products'" [class.active]="activeTab === 'products'">
+        <span class="nav-icon">🍎</span>
+        <span class="nav-label">Sản Phẩm</span>
+      </div>
+      <div class="nav-item" (click)="activeTab = 'orders'" [class.active]="activeTab === 'orders'">
+        <span class="nav-icon">📦</span>
+        <span class="nav-label">Đơn Hàng</span>
+      </div>
+      <div class="nav-item" (click)="activeTab = 'users'" [class.active]="activeTab === 'users'">
+        <span class="nav-icon">👥</span>
+        <span class="nav-label">Người Dùng</span>
+      </div>
+      <div class="nav-item" (click)="activeTab = 'coupons'; loadCoupons()" [class.active]="activeTab === 'coupons'">
+        <span class="nav-icon">🎟️</span>
+        <span class="nav-label">Mã Coupon</span>
+      </div>
+    </nav>
+  </div>
+
+  <!-- Main Content -->
+  <div class="admin-container">
+    <div class="admin-header">
+      <h1>Trang Quản Lý Admin</h1>
+    </div>
+    
+    <!-- Dashboard Tab -->
+    <div *ngIf="activeTab === 'dashboard'" class="tab-content dashboard-tab">
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon" style="background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);">📦</div>
+          <div class="stat-content">
+            <div class="stat-label">Tổng Sản Phẩm</div>
+            <div class="stat-value">{{ fruits.length }}</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon" style="background: linear-gradient(135deg, #4ecdc4 0%, #44a8a0 100%);">📋</div>
+          <div class="stat-content">
+            <div class="stat-label">Tổng Đơn Hàng</div>
+            <div class="stat-value">{{ orders.length }}</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon" style="background: linear-gradient(135deg, #f9ca24 0%, #f0b90b 100%);">✓</div>
+          <div class="stat-content">
+            <div class="stat-label">Đơn Hoàn Thành</div>
+            <div class="stat-value">{{ getCompletedOrders() }}</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon" style="background: linear-gradient(135deg, #6c5ce7 0%, #5f3dc4 100%);">👥</div>
+          <div class="stat-content">
+            <div class="stat-label">Tồn Kho Chung</div>
+            <div class="stat-value">{{ getTotalStock() }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Products Tab -->
+    <div *ngIf="activeTab === 'products'" class="tab-content">
+      <div class="content-header">
+        <h2>Quản Lý Sản Phẩm</h2>
+        <div class="header-actions">
+          <button (click)="newProduct()" class="btn-primary">+ Thêm sản phẩm mới</button>
+          <button (click)="seedData()" class="btn-secondary">⟲ Tạo dữ liệu seed</button>
+        </div>
+      </div>
+      
+      <div *ngIf="loading" class="loading">Đang tải dữ liệu...</div>
+      
+      <div *ngIf="!loading && showProductForm" class="product-form-container">
+        <div class="form-card">
+          <h3>{{ productForm._id ? 'Cập nhật sản phẩm' : 'Thêm sản phẩm mới' }}</h3>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label>Tên sản phẩm</label>
+              <input type="text" [(ngModel)]="productForm.name" placeholder="Tên sản phẩm">
+            </div>
+            <div class="form-group">
+              <label>Giá (VNĐ)</label>
+              <input type="number" [(ngModel)]="productForm.price" placeholder="Giá">
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label>Số lượng tồn kho</label>
+              <input type="number" [(ngModel)]="productForm.stock" placeholder="Số lượng">
+            </div>
+            <div class="form-group">
+              <label>Danh mục</label>
+              <input type="text" [(ngModel)]="productForm.category" placeholder="Danh mục">
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label>Mô tả</label>
+            <textarea [(ngModel)]="productForm.description" placeholder="Mô tả sản phẩm" rows="3"></textarea>
+          </div>
+          
+          <div class="form-group">
+            <label>Hình ảnh sản phẩm</label>
+            <input type="file" accept="image/*" (change)="onImageSelected($event)" placeholder="Chọn hình ảnh">
+            <div *ngIf="productForm.image" class="image-preview">
+              <img [src]="productForm.image" alt="Preview" style="max-width: 200px; max-height: 200px;">
+            </div>
+          </div>
+          
+          <div class="form-actions">
+            <button (click)="saveProduct()" class="btn-primary">Lưu</button>
+            <button (click)="showProductForm = false" class="btn-secondary">Hủy</button>
+          </div>
+        </div>
+      </div>
+      
+      <table *ngIf="!loading && !showProductForm" class="products-table">
+        <thead>
+          <tr>
+            <th>Tên sản phẩm</th>
+            <th>Giá</th>
+            <th>Tồn kho</th>
+            <th>Danh mục</th>
+            <th>Mô tả</th>
+            <th>Hành động</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let fruit of fruits">
+            <td>{{ fruit.name }}</td>
+            <td>{{ fruit.price.toLocaleString('vi-VN') }}đ</td>
+            <td>{{ fruit.stock }}</td>
+            <td>{{ fruit.category }}</td>
+            <td>{{ fruit.description }}</td>
+            <td class="actions">
+              <button (click)="editProduct(fruit)" class="btn-edit">Sửa</button>
+              <button (click)="deleteProduct(fruit._id)" class="btn-delete">Xóa</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    
+    <!-- Orders Tab -->
+    <div *ngIf="activeTab === 'orders'" class="tab-content">
+      <div class="content-header">
+        <h2>Quản Lý Đơn Hàng</h2>
+      </div>
+      
+      <div *ngIf="loading" class="loading">Đang tải dữ liệu...</div>
+      
+      <table *ngIf="!loading" class="orders-table">
+        <thead>
+          <tr>
+            <th>Mã Đơn Hàng</th>
+            <th>Khách Hàng</th>
+            <th>Địa Chỉ</th>
+            <th>Số Điện Thoại</th>
+            <th>Giá Tiền</th>
+            <th>Trạng Thái</th>
+            <th>Hành Động</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let order of orders">
+            <td>#{{ order._id.substring(0, 8) }}</td>
+            <td>{{ order.userName || 'N/A' }}</td>
+            <td>{{ order.address }}</td>
+            <td>{{ order.phone }}</td>
+            <td>{{ order.totalPrice.toLocaleString('vi-VN') }}đ</td>
+            <td>
+              <select class="status-select" [value]="order.status" (change)="updateOrderStatus(order._id, getSelectValue($event))">
+                <option value="pending">Chờ xử lý</option>
+                <option value="confirmed">Đã xác nhận</option>
+                <option value="shipped">Đang giao</option>
+                <option value="completed">Hoàn thành</option>
+                <option value="cancelled">Huỷ bỏ</option>
+              </select>
+            </td>
+            <td class="actions">
+              <button (click)="updateOrderStatus(order._id, 'completed')" class="btn-edit">Hoàn Thành</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Users Tab -->
+    <div *ngIf="activeTab === 'users'" class="tab-content">
+      <div class="content-header">
+        <h2>Quản Lý Người Dùng</h2>
+      </div>
+      
+      <div *ngIf="loading" class="loading">Đang tải dữ liệu...</div>
+      
+      <table *ngIf="!loading" class="users-table">
+        <thead>
+          <tr>
+            <th>Tên</th>
+            <th>Email</th>
+            <th>Quyền Hạn</th>
+            <th>Ngày Tạo</th>
+            <th>Hành Động</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of users">
+            <td>{{ user.name }}</td>
+            <td>{{ user.email }}</td>
+            <td>
+              <select class="role-select" [value]="user.role" (change)="updateUserRole(user._id, getSelectValue($event))">
+                <option value="user">Người dùng</option>
+                <option value="admin">Quản trị viên</option>
+              </select>
+            </td>
+            <td>{{ user.createdAt ? (user.createdAt | date:'dd/MM/yyyy') : 'N/A' }}</td>
+            <td class="actions">
+              <button (click)="deleteUser(user._id, user.name)" class="btn-delete">Xóa</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Coupons Tab -->
+    <div *ngIf="activeTab === 'coupons'" class="tab-content">
+      <div class="content-header">
+        <h2>Quản Lý Mã Coupon</h2>
+        <div class="header-actions">
+          <button (click)="newCoupon()" class="btn-primary">+ Thêm mã coupon mới</button>
+        </div>
+      </div>
+      
+      <div *ngIf="loading" class="loading">Đang tải dữ liệu...</div>
+      
+      <div *ngIf="!loading && showCouponForm" class="product-form-container">
+        <div class="form-card">
+          <h3>{{ couponForm._id ? 'Cập nhật mã coupon' : 'Thêm mã coupon mới' }}</h3>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label>Mã Coupon</label>
+              <input type="text" [(ngModel)]="couponForm.code" placeholder="VD: SUMMER20" style="text-transform: uppercase;">
+            </div>
+            <div class="form-group">
+              <label>Loại Giảm Giá</label>
+              <select [(ngModel)]="couponForm.discountType">
+                <option value="percent">% Phần Trăm</option>
+                <option value="fixed">VNĐ Cố Định</option>
+              </select>
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label>Giá Trị Giảm</label>
+              <input type="number" [(ngModel)]="couponForm.discountValue" placeholder="Nhập giá trị giảm">
+            </div>
+            <div class="form-group">
+              <label>Giá Trị Đơn Hàng Tối Thiểu</label>
+              <input type="number" [(ngModel)]="couponForm.minOrderValue" placeholder="Nhập giá trị tối thiểu">
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label>Số Lần Sử Dụng Tối Đa</label>
+              <input type="number" [(ngModel)]="couponForm.maxUses" placeholder="Để trống để không giới hạn">
+            </div>
+            <div class="form-group">
+              <label>Ngày Hết Hạn</label>
+              <input type="date" [(ngModel)]="couponForm.expiryDate">
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label>Mô Tả</label>
+            <textarea [(ngModel)]="couponForm.description" placeholder="Mô tả mã coupon" rows="2"></textarea>
+          </div>
+          
+          <div class="form-actions">
+            <button (click)="saveCoupon()" class="btn-primary">Lưu</button>
+            <button (click)="showCouponForm = false" class="btn-secondary">Hủy</button>
+          </div>
+        </div>
+      </div>
+      
+      <table *ngIf="!loading && !showCouponForm" class="products-table">
+        <thead>
+          <tr>
+            <th>Mã Coupon</th>
+            <th>Kiểu Giảm</th>
+            <th>Giá Trị</th>
+            <th>Lần Dùng</th>
+            <th>Giá Trị Tối Thiểu</th>
+            <th>Hết Hạn</th>
+            <th>Trạng Thái</th>
+            <th>Hành Động</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let coupon of coupons">
+            <td><strong>{{ coupon.code }}</strong></td>
+            <td>{{ coupon.discountType === 'percent' ? '%' : 'VNĐ' }}</td>
+            <td>{{ coupon.discountValue }}</td>
+            <td>{{ coupon.usedCount }}/{{ coupon.maxUses || '∞' }}</td>
+            <td>{{ coupon.minOrderValue.toLocaleString('vi-VN') }}đ</td>
+            <td>{{ coupon.expiryDate ? (coupon.expiryDate | date:'dd/MM/yyyy') : '∞' }}</td>
+            <td>
+              <span [class]="'status-' + (coupon.isActive ? 'active' : 'inactive')">
+                {{ coupon.isActive ? 'Hoạt động' : 'Không hoạt động' }}
+              </span>
+            </td>
+            <td class="actions">
+              <button (click)="editCoupon(coupon)" class="btn-edit">Sửa</button>
+              <button (click)="deleteCoupon(coupon._id, coupon.code)" class="btn-delete">Xóa</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
